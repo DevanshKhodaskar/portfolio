@@ -1,0 +1,7 @@
+{
+  "title": "Article Title Here",
+  "abstract": "Brief summary of your article that will appear in the articles list (100-150 characters recommended)",
+  "date": "2025-01-15",
+  "featured": false,
+  "banner": "/articles/your-article-slug/images/banner.jpg"
+}
