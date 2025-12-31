@@ -4,97 +4,65 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useFetcher,
   useLoaderData,
+  useFetcher,
   useNavigation,
   useRouteError,
 } from '@remix-run/react';
-import { json } from '@remix-run/node';
 
+import { json, createCookieSessionStorage } from '@remix-run/node';
 import { ThemeProvider, themeStyles } from '~/components/theme-provider';
-import GothamBook from '~/assets/fonts/gotham-book.woff2';
-import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
-import { useEffect } from 'react';
 import { Error } from '~/layouts/error';
-import { VisuallyHidden } from '~/components/visually-hidden';
 import { Navbar } from '~/layouts/navbar';
 import { Progress } from '~/components/progress';
+import { VisuallyHidden } from '~/components/visually-hidden';
+
 import config from '~/config.json';
 import styles from './root.module.css';
 import './reset.module.css';
 import './global.module.css';
 
-export const links = () => [
-  {
-    rel: 'preload',
-    href: GothamMedium,
-    as: 'font',
-    type: 'font/woff2',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'preload',
-    href: GothamBook,
-    as: 'font',
-    type: 'font/woff2',
-    crossOrigin: 'anonymous',
-  },
-];
-
 export const loader = async ({ request }) => {
-  const url = new URL(request.url);
-  const pathname = url.pathname.endsWith('/')
-    ? url.pathname.slice(0, -1)
-    : url.pathname;
-
-  return json({
-    canonicalUrl: `${config.url}${pathname}`,
-    theme: 'dark',
+  const sessionStorage = createCookieSessionStorage({
+    cookie: {
+      name: '__session',
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+      secrets: ['dev-secret'],
+      secure: process.env.NODE_ENV === 'production',
+    },
   });
+
+  const session = await sessionStorage.getSession(
+    request.headers.get('Cookie')
+  );
+
+  const theme = session.get('theme') ?? 'dark';
+
+  return json({ theme });
 };
 
 export default function App() {
-  let { canonicalUrl, theme } = useLoaderData();
+  const { theme } = useLoaderData();
   const fetcher = useFetcher();
   const { state } = useNavigation();
-
-  function toggleTheme(newTheme) {
-    fetcher.submit(
-      { theme: newTheme ?? (theme === 'dark' ? 'light' : 'dark') },
-      { action: '/api/set-theme', method: 'post' }
-    );
-  }
-
-  useEffect(() => {
-    console.info(
-      `${config.ascii}\nSource code: ${config.repo}`
-    );
-  }, []);
 
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content={theme === 'dark' ? '#111' : '#F2F2F2'} />
-        <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
         <Meta />
         <Links />
-        <link rel="canonical" href={canonicalUrl} />
+        <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
       </head>
       <body data-theme={theme}>
-        <ThemeProvider theme={theme} toggleTheme={toggleTheme}>
+        <ThemeProvider theme={theme}>
           <Progress />
-          <VisuallyHidden showOnFocus as="a" className={styles.skip} href="#main-content">
-            Skip to main content
+          <VisuallyHidden showOnFocus as="a" href="#main-content">
+            Skip to content
           </VisuallyHidden>
           <Navbar />
-          <main
-            id="main-content"
-            className={styles.container}
-            tabIndex={-1}
-            data-loading={state === 'loading'}
-          >
+          <main id="main-content" data-loading={state === 'loading'}>
             <Outlet />
           </main>
         </ThemeProvider>
@@ -107,16 +75,5 @@ export default function App() {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-  return (
-    <html lang="en">
-      <head>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <Error error={error} />
-        <Scripts />
-      </body>
-    </html>
-  );
+  return <Error error={error} />;
 }
