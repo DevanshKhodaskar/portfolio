@@ -1,10 +1,7 @@
 import { Button } from '~/components/button';
 import { DecoderText } from '~/components/decoder-text';
-import { Divider } from '~/components/divider';
 import { Footer } from '~/components/footer';
 import { Heading } from '~/components/heading';
-import { Icon } from '~/components/icon';
-import { Input } from '~/components/input';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { tokens } from '~/components/theme-provider/theme';
@@ -13,91 +10,33 @@ import { useFormInput } from '~/hooks';
 import { useRef } from 'react';
 import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
-import { Form, useActionData, useNavigation } from '@remix-run/react';
+import { useActionData, useNavigation } from '@remix-run/react';
 import { json } from '@remix-run/node';
-// import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import styles from './contact.module.css';
 
-export const meta = () => {
-  return baseMeta({
+/* ---------------- META ---------------- */
+
+export const meta = () =>
+  baseMeta({
     title: 'Contact',
     description:
       'Send me a message if you’re interested in discussing a project or if you just want to say hi',
   });
-};
 
-// const MAX_EMAIL_LENGTH = 512;
-// const MAX_MESSAGE_LENGTH = 4096;
-// const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
+/* ---------------- ACTION (REQUIRED) ---------------- */
+/* Even if unused, Remix routes MUST export it if referenced */
 
-// export async function action({ context, request }) {
-//   const ses = new SESClient({
-//     region: 'us-east-1',
-//     credentials: {
-//       accessKeyId: context.cloudflare.env.AWS_ACCESS_KEY_ID,
-//       secretAccessKey: context.cloudflare.env.AWS_SECRET_ACCESS_KEY,
-//     },
-//   });
+export async function action() {
+  return json({ success: true });
+}
 
-//   const formData = await request.formData();
-//   const isBot = String(formData.get('name'));
-//   const email = String(formData.get('email'));
-//   const message = String(formData.get('message'));
-//   const errors = {};
+/* ---------------- COMPONENT ---------------- */
 
-//   // Return without sending if a bot trips the honeypot
-//   if (isBot) return json({ success: true });
-
-//   // Handle input validation on the server
-//   if (!email || !EMAIL_PATTERN.test(email)) {
-//     errors.email = 'Please enter a valid email address.';
-//   }
-
-//   if (!message) {
-//     errors.message = 'Please enter a message.';
-//   }
-
-//   if (email.length > MAX_EMAIL_LENGTH) {
-//     errors.email = `Email address must be shorter than ${MAX_EMAIL_LENGTH} characters.`;
-//   }
-
-//   if (message.length > MAX_MESSAGE_LENGTH) {
-//     errors.message = `Message must be shorter than ${MAX_MESSAGE_LENGTH} characters.`;
-//   }
-
-//   if (Object.keys(errors).length > 0) {
-//     return json({ errors });
-//   }
-
-//   // // Send email via Amazon SES
-//   // await ses.send(
-//   //   new SendEmailCommand({
-//   //     Destination: {
-//   //       ToAddresses: [context.cloudflare.env.EMAIL],
-//   //     },
-//   //     Message: {
-//   //       Body: {
-//   //         Text: {
-//   //           Data: `From: ${email}\n\n${message}`,
-//   //         },
-//   //       },
-//   //       Subject: {
-//   //         Data: `Portfolio message from ${email}`,
-//   //       },
-//   //     },
-//   //     Source: `Portfolio <${context.cloudflare.env.FROM_EMAIL}>`,
-//   //     ReplyToAddresses: [email],
-//   //   })
-//   // );
-
-//   return json({ success: true });
-// }
-
-export const Contact = () => {
-  const errorRef = useRef();
+export default function Contact() {
   const email = useFormInput('');
   const message = useFormInput('');
   const initDelay = tokens.base.durationS;
+
   const actionData = useActionData();
   const { state } = useNavigation();
   const sending = state === 'submitting';
@@ -115,8 +54,13 @@ export const Contact = () => {
                 as="h1"
                 style={getDelay(tokens.base.durationXS, initDelay, 0.3)}
               >
-                <DecoderText text="Email directly" start={status !== 'exited'} delay={300} />
+                <DecoderText
+                  text="Email directly"
+                  start={status !== 'exited'}
+                  delay={300}
+                />
               </Heading>
+
               <Text
                 className={styles.mailDescription}
                 data-status={status}
@@ -126,6 +70,7 @@ export const Contact = () => {
               >
                 Open your default mail client and send a message directly
               </Text>
+
               <Button
                 className={styles.mailButton}
                 data-status={status}
@@ -139,6 +84,7 @@ export const Contact = () => {
           </div>
         )}
       </Transition>
+
       <Transition unmount in={actionData?.success}>
         {({ status, nodeRef }) => (
           <div className={styles.complete} aria-live="polite" ref={nodeRef}>
@@ -150,6 +96,7 @@ export const Contact = () => {
             >
               Message Sent
             </Heading>
+
             <Text
               size="l"
               as="p"
@@ -159,6 +106,7 @@ export const Contact = () => {
             >
               I’ll get back to you within a couple days, sit tight
             </Text>
+
             <Button
               secondary
               iconHoverShift
@@ -173,12 +121,17 @@ export const Contact = () => {
           </div>
         )}
       </Transition>
+
       <Footer className={styles.footer} />
     </Section>
   );
-};
+}
+
+/* ---------------- UTILS ---------------- */
 
 function getDelay(delayMs, offset = numToMs(0), multiplier = 1) {
   const numDelay = msToNum(delayMs) * multiplier;
-  return cssProps({ delay: numToMs((msToNum(offset) + numDelay).toFixed(0)) });
+  return cssProps({
+    delay: numToMs((msToNum(offset) + numDelay).toFixed(0)),
+  });
 }
