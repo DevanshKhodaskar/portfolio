@@ -135,3 +135,4 @@ function getDelay(delayMs, offset = numToMs(0), multiplier = 1) {
     delay: numToMs((msToNum(offset) + numDelay).toFixed(0)),
   });
 }
+  
