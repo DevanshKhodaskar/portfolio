@@ -1,6 +1,6 @@
 import {
   vitePlugin as remix,
-  cloudflareDevProxyVitePlugin as remixCloudflareDevProxy,
+  // cloudflareDevProxyVitePlugin as remixCloudflareDevProxy,
 } from '@remix-run/dev';
 import { defineConfig } from 'vite';
 import jsconfigPaths from 'vite-jsconfig-paths';
