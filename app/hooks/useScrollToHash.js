@@ -10,8 +10,13 @@ export function useScrollToHash() {
 
   const scrollToHash = useCallback(
     (hash, onDone) => {
+      // SSR-safe: only run on client
+      if (typeof window === 'undefined') return;
+
       const id = hash.split('#')[1];
       const targetElement = document.getElementById(id);
+
+      if (!targetElement) return;
 
       targetElement.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
 

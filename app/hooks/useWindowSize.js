@@ -24,6 +24,9 @@ export function useWindowSize() {
 
   // Get the actual height on iOS Safari
   const getHeight = useCallback(() => {
+    // SSR-safe: only access navigator inside useEffect
+    if (typeof window === 'undefined') return 800;
+
     const isIOS = navigator?.userAgent.match(/iphone|ipod|ipad/i);
 
     if (isIOS) {
@@ -35,6 +38,11 @@ export function useWindowSize() {
   }, [createRuler]);
 
   const getSize = useCallback(() => {
+    // SSR-safe: only access window inside useEffect
+    if (typeof window === 'undefined') {
+      return { width: 1280, height: 800 };
+    }
+
     return {
       width: window.innerWidth,
       height: getHeight(),
