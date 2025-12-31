@@ -13,9 +13,9 @@
   "dependencies": {
     "@mdx-js/react": "^3.0.1",
     "@remix-run/dev": "^2.7.1",
+    "@remix-run/node": "^2.7.1",
     "@remix-run/react": "^2.7.1",
     "framer-motion": "11.0.5",
-     "@remix-run/node": "^2.7.1",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
