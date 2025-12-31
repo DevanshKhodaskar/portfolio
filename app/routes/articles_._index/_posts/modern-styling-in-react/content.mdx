@@ -274,8 +274,6 @@ function Button({ color, size, primary, children }) {
 
 Have a play with the example button component here:
 
-<Embed src="https://stackblitz.com/edit/vitejs-vite-mjs1oh?embed=1&file=src/Button/Button.jsx" />
-
 This looks similar to how modifiers are written using BEM syntax. It's also much more straightforward and easy to read than the Styled Components function syntax. The one downside is that we do gain a level of specificity that we don't with BEM modifiers using the `&--modifier` pattern, but I think that's an acceptable tradeoff.
 
 It may seem kinda _weird_ at first to use data attributes for styling, but it gets around the problem of messy string concatenation using classes. It also mirrors how we can target accessibility attributes for interaction-based styling, for example:
