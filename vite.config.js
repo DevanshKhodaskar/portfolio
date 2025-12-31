@@ -1,14 +1,32 @@
 import { vitePlugin as remix } from '@remix-run/dev';
-import { vercelPreset } from '@vercel/remix'; // Add this
 import { defineConfig } from 'vite';
-// ... other imports
+import jsconfigPaths from 'vite-jsconfig-paths';
+import mdx from '@mdx-js/rollup';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
+import rehypeImgSize from 'rehype-img-size';
+import rehypeSlug from 'rehype-slug';
+import rehypePrism from '@mapbox/rehype-prism';
 
 export default defineConfig({
-  // ... existing config
+  assetsInclude: ['**/*.glb', '**/*.hdr', '**/*.glsl'],
+  build: {
+    assetsInlineLimit: 1024,
+  },
+  server: {
+    port: 7777,
+  },
   plugins: [
-    mdx({ /* ... */ }),
+    mdx({
+      rehypePlugins: [
+        [rehypeImgSize, { dir: 'public' }],
+        rehypeSlug,
+        rehypePrism,
+      ],
+      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+      providerImportSource: '@mdx-js/react',
+    }),
     remix({
-      presets: [vercelPreset()], // Add this line
       routes(defineRoutes) {
         return defineRoutes(route => {
           route('/', 'routes/home/route.js', { index: true });
