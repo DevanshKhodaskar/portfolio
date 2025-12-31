@@ -1,6 +1,6 @@
-import { baseMeta } from '~/utils/meta';
-import { getPosts } from './posts.server';
-// import { json } from '@remix-run/cloudflare';
+import { json } from "@remix-run/node";
+import { baseMeta } from "~/utils/meta";
+import { getPosts } from "./posts.server";
 
 export async function loader() {
   const allPosts = await getPosts();
@@ -12,10 +12,9 @@ export async function loader() {
 
 export function meta() {
   return baseMeta({
-    title: 'Experiences',
-    description:
-      'Overall brief of my all experiences.',
+    title: "Experiences",
+    description: "Overall brief of my all experiences.",
   });
 }
 
-export { Articles as default } from './articles';
+export { Articles as default } from "./articles";
