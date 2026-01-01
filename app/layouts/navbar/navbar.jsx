@@ -23,7 +23,8 @@ export const Navbar = () => {
   const windowSize = useWindowSize();
   const headerRef = useRef();
   const isHydrated = useHydrated();
-  const isMobile = windowSize.width <= media.mobile || windowSize.height <= 696;
+  // Only calculate isMobile after hydration to avoid SSR mismatch
+  const isMobile = isHydrated && (windowSize.width <= media.mobile || windowSize.height <= 696);
   const scrollToHash = useScrollToHash();
 
   useEffect(() => {

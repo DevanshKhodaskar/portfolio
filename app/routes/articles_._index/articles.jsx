@@ -8,6 +8,7 @@ import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { useReducedMotion } from 'framer-motion';
 import { useWindowSize } from '~/hooks';
+import { useHydrated } from '~/hooks/useHydrated';
 import { Link as RouterLink, useLoaderData } from '@remix-run/react';
 import { useState, useEffect } from 'react';
 import { formatDate } from '~/utils/date';
@@ -136,8 +137,10 @@ function SkeletonPost({ index }) {
 export function Articles() {
   const { posts, featured } = useLoaderData();
   const { width } = useWindowSize();
+  const isHydrated = useHydrated();
   const singleColumnWidth = 1190;
-  const isSingleColumn = width <= singleColumnWidth;
+  // Only calculate isSingleColumn after hydration to avoid SSR mismatch
+  const isSingleColumn = isHydrated && width <= singleColumnWidth;
 
   const postsHeader = (
     <header className={styles.header}>
