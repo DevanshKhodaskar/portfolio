@@ -48,6 +48,13 @@ export default function App() {
   const fetcher = useFetcher();
   const { state } = useNavigation();
 
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    const formData = new FormData();
+    formData.append('theme', newTheme);
+    fetcher.submit(formData, { method: 'post', action: '/api/set-theme' });
+  };
+
   return (
     <html lang="en" data-theme={theme}>
       <head>
@@ -56,7 +63,7 @@ export default function App() {
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
       </head>
       <body data-theme={theme}>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme} toggleTheme={toggleTheme}>
           <Progress />
           <VisuallyHidden showOnFocus as="a" href="#main-content">
             Skip to content

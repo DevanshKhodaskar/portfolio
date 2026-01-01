@@ -12,6 +12,7 @@ import { ThemeToggle } from './theme-toggle';
 import { navLinks, socialLinks } from './nav-data';
 import config from '~/config.json';
 import styles from './navbar.module.css';
+import { useHydrated } from '~/hooks/useHydrated';
 
 export const Navbar = () => {
   const [current, setCurrent] = useState();
@@ -21,6 +22,7 @@ export const Navbar = () => {
   const location = useLocation();
   const windowSize = useWindowSize();
   const headerRef = useRef();
+  const isHydrated = useHydrated();
   const isMobile = windowSize.width <= media.mobile || windowSize.height <= 696;
   const scrollToHash = useScrollToHash();
 
@@ -199,7 +201,7 @@ export const Navbar = () => {
           </nav>
         )}
       </Transition>
-      {!isMobile && <ThemeToggle data-navbar-item />}
+      {isHydrated && !isMobile && <ThemeToggle data-navbar-item />}
     </header>
   );
 };
