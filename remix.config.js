@@ -1,8 +1,7 @@
-/** @type {import('@remix-run/dev').AppConfig} */
-export default {
-  appDirectory: "app",
-  assetsBuildDirectory: "public/build",
-  serverBuildDirectory: "build/server",
-  publicPath: "/build/",
-  serverModuleFormat: "esm",
-};
+import { createRequestHandler } from "@vercel/remix";
+import build from "../build/server/index.js";
+
+export default createRequestHandler({
+  build,
+  mode: process.env.NODE_ENV,
+});
