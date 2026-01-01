@@ -23,8 +23,9 @@ export const Navbar = () => {
   const windowSize = useWindowSize();
   const headerRef = useRef();
   const isHydrated = useHydrated();
-  // Only calculate isMobile after hydration to avoid SSR mismatch
-  const isMobile = isHydrated && (windowSize.width <= media.mobile || windowSize.height <= 696);
+  // Assume desktop on server (width: 1280, height: 800), then update after hydration
+  // This prevents hydration mismatch by matching server's initial render
+  const isMobile = windowSize.width <= media.mobile || windowSize.height <= 696;
   const scrollToHash = useScrollToHash();
 
   useEffect(() => {

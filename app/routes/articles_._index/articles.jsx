@@ -137,10 +137,10 @@ function SkeletonPost({ index }) {
 export function Articles() {
   const { posts, featured } = useLoaderData();
   const { width } = useWindowSize();
-  const isHydrated = useHydrated();
   const singleColumnWidth = 1190;
-  // Only calculate isSingleColumn after hydration to avoid SSR mismatch
-  const isSingleColumn = isHydrated && width <= singleColumnWidth;
+  // Assume desktop on server (width: 1280), then update after hydration
+  // This prevents hydration mismatch by matching server's initial render
+  const isSingleColumn = width <= singleColumnWidth;
 
   const postsHeader = (
     <header className={styles.header}>
