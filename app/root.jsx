@@ -54,6 +54,17 @@ export default function App() {
         <Meta />
         <Links />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = ${JSON.stringify(theme)};
+                document.documentElement.setAttribute('data-theme', theme);
+                document.body.setAttribute('data-theme', theme);
+              })();
+            `,
+          }}
+        />
       </head>
       <body data-theme={theme}>
         <ThemeProvider theme={theme}>
