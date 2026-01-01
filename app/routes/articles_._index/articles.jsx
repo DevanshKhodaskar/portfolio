@@ -152,7 +152,7 @@ export function Articles() {
   );
 
   const postList = (
-    <div className={styles.list}>
+    <div className={styles.list} suppressHydrationWarning>
       {!isSingleColumn && postsHeader}
       {posts.map(({ slug, ...post }, index) => (
         <ArticlesPost key={slug} slug={slug} index={index} {...post} />

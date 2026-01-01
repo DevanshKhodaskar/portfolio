@@ -194,7 +194,7 @@ export function ProjectSummary({
       tabIndex={-1}
       {...rest}
     >
-      <div className={styles.content}>
+      <div className={styles.content} suppressHydrationWarning>
         <Transition in={sectionVisible || focused}>
           {({ visible }) => (
             <>
