@@ -68,6 +68,11 @@ export async function resolveSrcFromSrcSet({ srcSet, sizes }) {
     throw new Error('srcSet is required');
   }
 
+  // If srcSet is just a single URL without width descriptors, return it directly
+  if (!srcSet.includes(' ')) {
+    return srcSet;
+  }
+
   const sources = await Promise.all(
     srcSet.split(', ').map(async srcString => {
       const [src, width] = srcString.split(' ');
