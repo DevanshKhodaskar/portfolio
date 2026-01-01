@@ -1,9 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "remix vite:build",
-  "outputDirectory": "build/client",
+  "buildCommand": "npm run build",
   "functions": {
     "api/index.js": {
+      "runtime": "nodejs24.x",
       "includeFiles": "build/server/**"
     }
   },

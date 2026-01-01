@@ -5,6 +5,7 @@ import { useTheme } from '~/components/theme-provider';
 import { tokens } from '~/components/theme-provider/theme';
 import { Transition } from '~/components/transition';
 import { VisuallyHidden } from '~/components/visually-hidden';
+import { ClientOnly } from '~/components/ClientOnly';
 import { Link as RouterLink } from '@remix-run/react';
 import { useInterval, usePrevious, useScrollToHash } from '~/hooks';
 import { Suspense, lazy, useEffect, useState } from 'react';
@@ -64,9 +65,11 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
         {({ visible, status }) => (
           <>
             {isHydrated && (
-              <Suspense>
-                <DisplacementSphere />
-              </Suspense>
+              <ClientOnly>
+                <Suspense>
+                  <DisplacementSphere />
+                </Suspense>
+              </ClientOnly>
             )}
             <header className={styles.text}>
               <h1 className={styles.name} data-visible={visible} id={titleId}>

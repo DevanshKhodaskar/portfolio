@@ -36,6 +36,7 @@ import {
   ProjectTextRow,
 } from '~/layouts/project';
 import { Fragment, Suspense, lazy } from 'react';
+import { ClientOnly } from '~/components/ClientOnly';
 import { media } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
 import { VolkiharLogo } from './volkihar-logo';
@@ -115,9 +116,11 @@ export function VolkiharKnight() {
         <ProjectSection>
           <ProjectSectionColumns>
             <div className={styles.armor}>
-              <Suspense>
-                <Armor alt="3D model of the Volkihar Knight armor" />
-              </Suspense>
+              <ClientOnly fallback={<div style={{ aspectRatio: '1 / 1' }} />}>
+                <Suspense>
+                  <Armor alt="3D model of the Volkihar Knight armor" />
+                </Suspense>
+              </ClientOnly>
             </div>
             <div className={styles.textSection}>
               <ProjectSectionHeading>Armor design</ProjectSectionHeading>
@@ -157,30 +160,32 @@ export function VolkiharKnight() {
         </ProjectSection>
         <ProjectSection>
           <ProjectSectionContent>
-            <Suspense>
-              <Carousel
-                placeholder={volkiharSlidePlaceholder}
-                images={[
-                  {
-                    srcSet: `${volkiharSlide1} 960w, ${volkiharSlide1Large} 1920w`,
-                    sizes: `(max-width: ${media.mobile}px) 100vw, (max-width: ${media.tablet}px) 100vw, 1096px`,
-                    alt: 'A female character wearing the black coloured armor set.',
-                  },
-                  {
-                    srcSet: `${volkiharSlide2} 960w, ${volkiharSlide2Large} 1920w`,
-                    sizes: `(max-width: ${media.mobile}px) 100vw, (max-width: ${media.tablet}px) 100vw, 1096px`,
-                    alt: 'A close up of the custom gauntlets design.',
-                  },
-                  {
-                    srcSet: `${volkiharSlide3} 960w, ${volkiharSlide3Large} 1920w`,
-                    sizes: `(max-width: ${media.mobile}px) 100vw, (max-width: ${media.tablet}px) 100vw, 1096px`,
-                    alt: 'A female character wielding a sword and wearing the red coloured armor.',
-                  },
-                ]}
-                width={1920}
-                height={1080}
-              />
-            </Suspense>
+            <ClientOnly fallback={<div style={{ aspectRatio: '16 / 9' }} />}>
+              <Suspense>
+                <Carousel
+                  placeholder={volkiharSlidePlaceholder}
+                  images={[
+                    {
+                      srcSet: `${volkiharSlide1} 960w, ${volkiharSlide1Large} 1920w`,
+                      sizes: `(max-width: ${media.mobile}px) 100vw, (max-width: ${media.tablet}px) 100vw, 1096px`,
+                      alt: 'A female character wearing the black coloured armor set.',
+                    },
+                    {
+                      srcSet: `${volkiharSlide2} 960w, ${volkiharSlide2Large} 1920w`,
+                      sizes: `(max-width: ${media.mobile}px) 100vw, (max-width: ${media.tablet}px) 100vw, 1096px`,
+                      alt: 'A close up of the custom gauntlets design.',
+                    },
+                    {
+                      srcSet: `${volkiharSlide3} 960w, ${volkiharSlide3Large} 1920w`,
+                      sizes: `(max-width: ${media.mobile}px) 100vw, (max-width: ${media.tablet}px) 100vw, 1096px`,
+                      alt: 'A female character wielding a sword and wearing the red coloured armor.',
+                    },
+                  ]}
+                  width={1920}
+                  height={1080}
+                />
+              </Suspense>
+            </ClientOnly>
           </ProjectSectionContent>
         </ProjectSection>
         <ProjectSection

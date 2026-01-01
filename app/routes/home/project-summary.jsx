@@ -7,6 +7,7 @@ import { Text } from '~/components/text';
 import { useTheme } from '~/components/theme-provider';
 import { Transition } from '~/components/transition';
 import { Loader } from '~/components/loader';
+import { ClientOnly } from '~/components/ClientOnly';
 import { useWindowSize } from '~/hooks';
 import { Suspense, lazy, useState } from 'react';
 import { cssProps, media } from '~/utils/style';
@@ -109,24 +110,26 @@ export function ProjectSummary({
                 <Loader center className={styles.loader} data-visible={visible} />
               )}
               {isHydrated && visible && (
-                <Suspense>
-                  <Model
-                    alt={model.alt}
-                    cameraPosition={{ x: 0, y: 0, z: 8 }}
-                    showDelay={700}
-                    onLoad={handleModelLoad}
-                    show={visible}
-                    models={[
-                      {
-                        ...deviceModels.laptop,
-                        texture: {
-                          ...model.textures[0],
-                          sizes: laptopSizes,
+                <ClientOnly>
+                  <Suspense>
+                    <Model
+                      alt={model.alt}
+                      cameraPosition={{ x: 0, y: 0, z: 8 }}
+                      showDelay={700}
+                      onLoad={handleModelLoad}
+                      show={visible}
+                      models={[
+                        {
+                          ...deviceModels.laptop,
+                          texture: {
+                            ...model.textures[0],
+                            sizes: laptopSizes,
+                          },
                         },
-                      },
-                    ]}
-                  />
-                </Suspense>
+                      ]}
+                    />
+                  </Suspense>
+                </ClientOnly>
               )}
             </div>
           </>
@@ -139,33 +142,35 @@ export function ProjectSummary({
                 <Loader center className={styles.loader} data-visible={visible} />
               )}
               {isHydrated && visible && (
-                <Suspense>
-                  <Model
-                    alt={model.alt}
-                    cameraPosition={{ x: 0, y: 0, z: 11.5 }}
-                    showDelay={300}
-                    onLoad={handleModelLoad}
-                    show={visible}
-                    models={[
-                      {
-                        ...deviceModels.phone,
-                        position: { x: -0.6, y: 1.1, z: 0 },
-                        texture: {
-                          ...model.textures[0],
-                          sizes: phoneSizes,
+                <ClientOnly>
+                  <Suspense>
+                    <Model
+                      alt={model.alt}
+                      cameraPosition={{ x: 0, y: 0, z: 11.5 }}
+                      showDelay={300}
+                      onLoad={handleModelLoad}
+                      show={visible}
+                      models={[
+                        {
+                          ...deviceModels.phone,
+                          position: { x: -0.6, y: 1.1, z: 0 },
+                          texture: {
+                            ...model.textures[0],
+                            sizes: phoneSizes,
+                          },
                         },
-                      },
-                      {
-                        ...deviceModels.phone,
-                        position: { x: 0.6, y: -0.5, z: 0.3 },
-                        texture: {
-                          ...model.textures[1],
-                          sizes: phoneSizes,
+                        {
+                          ...deviceModels.phone,
+                          position: { x: 0.6, y: -0.5, z: 0.3 },
+                          texture: {
+                            ...model.textures[1],
+                            sizes: phoneSizes,
+                          },
                         },
-                      },
-                    ]}
-                  />
-                </Suspense>
+                      ]}
+                    />
+                  </Suspense>
+                </ClientOnly>
               )}
             </div>
           </>
