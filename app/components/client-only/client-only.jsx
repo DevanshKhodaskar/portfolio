@@ -1,5 +1,4 @@
-// app/components/ClientOnly.jsx
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export function ClientOnly({ children, fallback = null }) {
   const [mounted, setMounted] = useState(false);
@@ -11,3 +10,4 @@ export function ClientOnly({ children, fallback = null }) {
   if (!mounted) return fallback;
   return children;
 }
+

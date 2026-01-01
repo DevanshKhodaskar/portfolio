@@ -12,7 +12,7 @@ import { useWindowSize } from '~/hooks';
 import { Suspense, lazy, useState } from 'react';
 import { cssProps, media } from '~/utils/style';
 import { useHydrated } from '~/hooks/useHydrated';
-import { ClientOnly } from '~/components/ClientOnly';
+import { ClientOnly } from '~/components/client-only';
 import katakana from './katakana.svg';
 import styles from './project-summary.module.css';
 
