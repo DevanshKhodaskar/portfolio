@@ -36,7 +36,7 @@ import {
   ProjectTextRow,
 } from '~/layouts/project';
 import { Fragment, Suspense, lazy } from 'react';
-import { ClientOnly } from '~/components/ClientOnly';
+import { ClientOnly } from '~/components/client-only';
 import { media } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
 import { VolkiharLogo } from './volkihar-logo';
