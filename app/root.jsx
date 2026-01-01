@@ -56,13 +56,13 @@ export default function App() {
   };
 
   return (
-    <html lang="en" data-theme={theme}>
+    <html lang="en" data-theme={theme} suppressHydrationWarning>
       <head>
         <Meta />
         <Links />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
       </head>
-      <body data-theme={theme}>
+      <body data-theme={theme} suppressHydrationWarning>
         <ThemeProvider theme={theme} toggleTheme={toggleTheme}>
           <Progress />
           <VisuallyHidden showOnFocus as="a" href="#main-content">
