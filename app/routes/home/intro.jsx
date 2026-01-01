@@ -89,7 +89,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                   </span>
                   <span className={styles.line} data-status={status} />
                 </span>
-                <div className={styles.row}>
+                <span className={styles.row}>
                   {disciplines.map(item => (
                     <Transition
                       unmount
@@ -111,7 +111,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                       )}
                     </Transition>
                   ))}
-                </div>
+                </span>
               </Heading>
             </header>
             <RouterLink
