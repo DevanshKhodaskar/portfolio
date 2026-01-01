@@ -15,11 +15,11 @@ import styles from './navbar.module.css';
 import { useHydrated } from '~/hooks/useHydrated';
 
 export const Navbar = () => {
-  const [current, setCurrent] = useState();
+  const location = useLocation();
+  const [current, setCurrent] = useState(`${location.pathname}${location.hash}`);
   const [menuOpen, setMenuOpen] = useState(false);
   const [target, setTarget] = useState();
   const { theme } = useTheme();
-  const location = useLocation();
   const windowSize = useWindowSize();
   const headerRef = useRef();
   const isHydrated = useHydrated();
@@ -27,7 +27,7 @@ export const Navbar = () => {
   const scrollToHash = useScrollToHash();
 
   useEffect(() => {
-    // Prevent ssr mismatch by storing this in state
+    // Update current when location changes
     setCurrent(`${location.pathname}${location.hash}`);
   }, [location]);
 
