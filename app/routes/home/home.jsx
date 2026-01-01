@@ -11,10 +11,10 @@
 // import sprTexturePlaceholder from '~/assets/spr-lesson-builder-dark-placeholder.jpg';
 
 // import sprTexture from '~/assets/spr-lesson-builder-dark.jpg';
-import finmanTexture from 'app/assets/finman_landing-page.png';
-import diagnoseAITexture from 'app/assets/DiagnoseAI.png';
-import parkAndGoTexture from 'app/assets/park-and-go.png';
-import parkAndGoTexture2 from 'app/assets/park-and-go-2.jpeg';
+import finmanTexture from '~/assets/finman_landing-page.png';
+import diagnoseAITexture from '~/assets/DiagnoseAI.png';
+import parkAndGoTexture from '~/assets/park-and-go.png';
+import parkAndGoTexture2 from '~/assets/park-and-go-2.jpeg';
 
 import { Footer } from '~/components/footer';
 import { baseMeta } from '~/utils/meta';
