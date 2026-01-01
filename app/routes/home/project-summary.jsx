@@ -12,6 +12,7 @@ import { useWindowSize } from '~/hooks';
 import { Suspense, lazy, useState } from 'react';
 import { cssProps, media } from '~/utils/style';
 import { useHydrated } from '~/hooks/useHydrated';
+import { ClientOnly } from '~/components/ClientOnly';
 import katakana from './katakana.svg';
 import styles from './project-summary.module.css';
 
@@ -195,25 +196,36 @@ export function ProjectSummary({
       tabIndex={-1}
       {...rest}
     >
-      <div className={styles.content} suppressHydrationWarning>
-        <Transition in={sectionVisible || focused}>
-          {({ visible }) => (
-            <>
-              {!alternate && !isMobile && (
-                <>
-                  {renderDetails(visible)}
-                  {renderPreview(visible)}
-                </>
-              )}
-              {(alternate || isMobile) && (
-                <>
-                  {renderPreview(visible)}
-                  {renderDetails(visible)}
-                </>
-              )}
-            </>
-          )}
-        </Transition>
+      <div className={styles.content}>
+        <ClientOnly fallback={
+          <Transition in={sectionVisible || focused}>
+            {({ visible }) => (
+              <>
+                {renderDetails(visible)}
+                {renderPreview(visible)}
+              </>
+            )}
+          </Transition>
+        }>
+          <Transition in={sectionVisible || focused}>
+            {({ visible }) => (
+              <>
+                {!alternate && !isMobile && (
+                  <>
+                    {renderDetails(visible)}
+                    {renderPreview(visible)}
+                  </>
+                )}
+                {(alternate || isMobile) && (
+                  <>
+                    {renderPreview(visible)}
+                    {renderDetails(visible)}
+                  </>
+                )}
+              </>
+            )}
+          </Transition>
+        </ClientOnly>
       </div>
     </Section>
   );

@@ -8,7 +8,7 @@ import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { useReducedMotion } from 'framer-motion';
 import { useWindowSize } from '~/hooks';
-import { useHydrated } from '~/hooks/useHydrated';
+import { ClientOnly } from '~/components/ClientOnly';
 import { Link as RouterLink, useLoaderData } from '@remix-run/react';
 import { useState, useEffect } from 'react';
 import { formatDate } from '~/utils/date';
@@ -152,8 +152,10 @@ export function Articles() {
   );
 
   const postList = (
-    <div className={styles.list} suppressHydrationWarning>
-      {!isSingleColumn && postsHeader}
+    <div className={styles.list}>
+      <ClientOnly fallback={postsHeader}>
+        {!isSingleColumn && postsHeader}
+      </ClientOnly>
       {posts.map(({ slug, ...post }, index) => (
         <ArticlesPost key={slug} slug={slug} index={index} {...post} />
       ))}
