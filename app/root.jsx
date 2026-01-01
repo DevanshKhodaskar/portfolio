@@ -49,22 +49,11 @@ export default function App() {
   const { state } = useNavigation();
 
   return (
-    <html lang="en">
+    <html lang="en" data-theme={theme}>
       <head>
         <Meta />
         <Links />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                const theme = ${JSON.stringify(theme)};
-                document.documentElement.setAttribute('data-theme', theme);
-                document.body.setAttribute('data-theme', theme);
-              })();
-            `,
-          }}
-        />
       </head>
       <body data-theme={theme}>
         <ThemeProvider theme={theme}>

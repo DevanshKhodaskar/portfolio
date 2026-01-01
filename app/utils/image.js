@@ -64,6 +64,10 @@ export async function generateImage(width = 1, height = 1) {
  * Use native html image `srcSet` resolution for non-html images
  */
 export async function resolveSrcFromSrcSet({ srcSet, sizes }) {
+  if (!srcSet) {
+    throw new Error('srcSet is required');
+  }
+
   const sources = await Promise.all(
     srcSet.split(', ').map(async srcString => {
       const [src, width] = srcString.split(' ');
