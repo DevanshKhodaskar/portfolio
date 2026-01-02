@@ -8,9 +8,20 @@ import { formatTimecode, readingTime } from '~/utils/timecode';
 
 export async function loader({ request }) {
   const slug = request.url.split('/').at(-1);
-  const module = await import(`../articles.${slug}.mdx`);
-  const text = await import(`../articles.${slug}.mdx?raw`);
-  const readTime = readingTime(text.default);
+
+  const modules = import.meta.glob('../articles.*.mdx');
+  const rawModules = import.meta.glob('../articles.*.mdx', { as: 'raw' });
+
+  const modulePath = `../articles.${slug}.mdx`;
+
+  if (!modules[modulePath] || !rawModules[modulePath]) {
+    throw new Response("Not Found", { status: 404 });
+  }
+
+  const module = await modules[modulePath]();
+  const text = await rawModules[modulePath]();
+
+  const readTime = readingTime(text);
   const ogImage = `${config.url}/static/${slug}-og.jpg`;
 
   return json({
