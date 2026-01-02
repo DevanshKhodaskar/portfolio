@@ -4,6 +4,4 @@ compatibility_flags = ["nodejs_compat"]
 main = "worker.js"
 assets = { directory = "build/client", binding = "ASSETS" }
 
-kv_namespaces = [
-  { id = "MY_KV", binding="MY_KV", preview_id = "MY_KV_PREVIEW" }
-]
+
