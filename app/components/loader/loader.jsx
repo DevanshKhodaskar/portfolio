@@ -2,6 +2,7 @@ import { Text } from '~/components/text';
 import { useReducedMotion } from 'framer-motion';
 import { classes, cssProps } from '~/utils/style';
 import { forwardRef } from 'react';
+import { useHydrated } from '~/hooks/useHydrated';
 import styles from './loader.module.css';
 
 export const Loader = forwardRef(
@@ -9,7 +10,9 @@ export const Loader = forwardRef(
     { className, style, width = 32, height = 4, text = 'Loading...', center, ...rest },
     ref
   ) => {
-    const reduceMotion = useReducedMotion();
+    const shouldReduceMotion = useReducedMotion();
+    const isHydrated = useHydrated();
+    const reduceMotion = isHydrated ? shouldReduceMotion : false;
 
     if (reduceMotion) {
       return (

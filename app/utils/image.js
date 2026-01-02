@@ -64,9 +64,22 @@ export async function generateImage(width = 1, height = 1) {
  * Use native html image `srcSet` resolution for non-html images
  */
 export async function resolveSrcFromSrcSet({ srcSet, sizes }) {
+  if (typeof srcSet === 'string' && !srcSet.includes(',')) {
+    const [src, width] = srcSet.split(' ');
+    if (!width) return src;
+  }
+
   const sources = await Promise.all(
     srcSet.split(', ').map(async srcString => {
       const [src, width] = srcString.split(' ');
+
+      // If no width, generate a default size or just return the src
+      if (!width) {
+        const size = 1000; // default large size assumption if missing
+        const image = await generateImage(size);
+        return { src, image, width: '1000w' };
+      }
+
       const size = Number(width.replace('w', ''));
       const image = await generateImage(size);
       return { src, image, width };
